@@ -1,3 +1,5 @@
+package view
+
 import geb.*
 
 class WikipediaPage extends Page {

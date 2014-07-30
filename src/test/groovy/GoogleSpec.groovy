@@ -1,6 +1,7 @@
-import spock.lang.*
-import geb.*
-import geb.spock.*
+import geb.spock.GebReportingSpec
+import view.GoogleHomePage
+import view.GoogleResultsPage
+import view.WikipediaPage
 
 class GoogleSpec extends GebReportingSpec {
 
@@ -9,7 +10,7 @@ class GoogleSpec extends GebReportingSpec {
         to GoogleHomePage
 
         and:
-        q = "wikipedia"
+        search.field = "wikipedia"
 
         then:
         at GoogleResultsPage

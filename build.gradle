@@ -2,47 +2,33 @@ apply plugin: "groovy"
 apply plugin: "idea"
 
 repositories {
-    jcenter()
+    //jcenter()
+    mavenCentral()
 }
-
-// The drivers we want to use
-ext.drivers = ["firefox", "chrome"]
 
 dependencies {
-    def gebVersion = "0.9.3"
-    def seleniumVersion = "2.42.2"
-    // If using Spock, need to depend on geb-spock
-    testCompile "org.gebish:geb-spock:$gebVersion"
-    testCompile ('org.spockframework:spock-core:0.7-groovy-2.0') {  
-        exclude group: 'org.codehaus.groovy'  
-        }
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:2.42.2"
     testCompile "org.codehaus.groovy:groovy-all:2.3.4"
 
-    // If using JUnit, need to depend on geb-junit (3 or 4)
-    testCompile "org.gebish:geb-junit4:$gebVersion"
-
-    // Drivers
-    drivers.each { driver ->
-        testCompile "org.seleniumhq.selenium:selenium-$driver-driver:$seleniumVersion"
+    // If using Spock, need to depend on geb-spock
+    testCompile "org.gebish:geb-spock:0.9.3"
+    testCompile ('org.spockframework:spock-core:0.7-groovy-2.0') {
+        exclude group: 'org.codehaus.groovy'
     }
-}
-
-drivers.each { driver ->
-    task "${driver}Test"(type: Test) {
-        reports {
-            html.destination = reporting.file("$name/tests")
-            junitXml.destination = file("$buildDir/test-results/$name")
-        }
-
-        systemProperty "geb.build.reportsDir", reporting.file("$name/geb")
-        systemProperty "geb.env", driver
-
-        // If you wanted to set the baseUrl in your build…
-        // systemProperty "geb.build.baseUrl", "http://myapp.com"
+    // If using JUnit, need to depend on geb-junit (3 or 4)
+    testCompile "org.gebish:geb-junit4:0.9.3"
+    testCompile( "com.github.detro.ghostdriver:phantomjsdriver:1.1.0" ) {
+        transitive = false
     }
 }
 
 test {
-	dependsOn drivers.collect { tasks["${it}Test"] }
-	enabled = false
+    reports {
+        html.destination = reporting.file('tests')
+        junitXml.destination = file("$buildDir/test-results/")
+    }
+
+    systemProperty 'phantomjs.binary.path', 'c:\\Progra\\phantomjs-1.9.7-windows\\phantomjs.exe'
+    systemProperty 'geb.build.reportsDir', reporting.file('geb-reports')
+    systemProperty 'geb.env', 'firefox'
 }
