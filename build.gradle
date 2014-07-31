@@ -28,7 +28,7 @@ test {
         junitXml.destination = file("$buildDir/test-results/")
     }
 
-    systemProperty 'phantomjs.binary.path', 'c:\\Progra\\phantomjs-1.9.7-windows\\phantomjs.exe'
+    //systemProperty 'phantomjs.binary.path', 'c:\\Progra\\phantomjs-1.9.7-windows\\phantomjs.exe'
     systemProperty 'geb.build.reportsDir', reporting.file('geb-reports')
     systemProperty 'geb.env', 'firefox'
 }
